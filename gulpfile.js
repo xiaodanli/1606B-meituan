@@ -14,6 +14,10 @@ var minCss = require('gulp-clean-css');
 
 var uglify = require('gulp-uglify');
 
+var swiperData = require('./mock/swiper.json');
+
+var list = require('./mock/list.json');
+
 function serverFun(serverUrl) {
     return gulp.src(serverUrl)
         .pipe(server({
@@ -21,14 +25,33 @@ function serverFun(serverUrl) {
             middleware: function(req, res, next) {
                 var pathname = url.parse(req.url).pathname;
 
-                if (pathname === '/favicon.ico') {
+                console.log(pathname)
+
+                if (pathname === '/favicon.ico' || pathname === '/js/libs/maps/swiper.min.js.map') {
                     res.end('');
 
                     return
                 }
 
                 if (pathname === '/api/swiper') {
+                    res.end(JSON.stringify({ code: 1, data: swiperData }))
+                } else if (pathname === '/api/list') {
+                    var params = url.parse(req.url, true).query;
 
+                    var limit = params.limit;
+
+                    var pagenum = params.pagenum;
+
+                    var total = Math.ceil(list.length / limit);
+
+                    //第一页  1   （0，10）
+
+                    //第二页  2    （10,20） 第三页 3 （20,30）(pagenum-1)*10 ,pagenum*10
+
+
+                    var targetArr = list.slice((pagenum - 1) * limit, pagenum * limit);
+
+                    res.end(JSON.stringify({ code: 1, data: targetArr, total: total }))
                 } else {
                     pathname = pathname === '/' ? '/index.html' : pathname;
                     res.end(fs.readFileSync(path.join(__dirname, serverUrl, pathname)))
@@ -71,9 +94,7 @@ gulp.task('buildJs', function() {
 })
 
 gulp.task('buildCss', function() {
-    return gulp.src('./src/sass/*.scss')
-        .pipe(sass())
-        .pipe(minCss())
+    return gulp.src('./src/css/*.css')
         .pipe(gulp.dest('./build/css'))
 })
 

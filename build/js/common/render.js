@@ -1,0 +1,1 @@
+define(["jquery","handlebars"],function(l,u){return function(n,e,r,t){var a=l(n).html(),i=u.compile(a)(e);t?l(r).append(i):l(r).html(i)}});

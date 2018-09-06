@@ -6,10 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/swiper-3.4.2.min.css">
 </head>
 
 <body>
-    shouye
+    <div class="wrap">
+        <header>头部</header>
+        <!-- 父级盒子 -->
+        <div class="con">
+            <!-- 滚动的内容 -->
+            <div up="上拉加载" down="下拉刷新" class="inner-con">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper"></div>
+                </div>
+                <script id="swiper-tpl" type="text/x-handlebars-template">
+                    {{#each this}}
+                    <div class="swiper-slide">
+                        {{#each list}}
+                        <dl>
+                            <dt>
+                                <img src="{{url}}" alt="">
+                            </dt>
+                            <dd>{{title}}</dd>
+                        </dl>
+                        {{/each}}
+                    </div>
+                    {{/each}}
+                </script>
+
+                <div class="list-wrap"></div>
+                <script id="list-tpl" type="text/x-handlebars-template">
+                    {{#each this}}
+                    <dl>
+                        <dt>
+                            <img src="{{url}}" alt="">
+                        </dt>
+                        <dd>{{title}}</dd>
+                    </dl>
+                    {{/each}}
+                </script>
+            </div>
+        </div>
+    </div>
+    <script src="./js/libs/require.js" data-main="./js/main.js"></script>
 </body>
 
 </html>
